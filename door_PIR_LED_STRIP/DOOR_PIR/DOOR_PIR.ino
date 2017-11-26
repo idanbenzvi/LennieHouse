@@ -1,10 +1,21 @@
 /*
-  Basic PIR Sensor Alert System
+  Basic PIR Sensor Alert System (Wifi connected ESP8266)
   -----------------------------
   * MQTT published messages
   * listening to incoming messages
   * once motion is detected a message is published
-  * 
+
+  The Door sensor only alerts the gateway (or message center) of an event using the MQTT protocol. The messages are relayed through the broker and the 
+  gateway decides how to act on the message. The message sent expects a return message with "ack" signal based on "1". If no such message is received an attempt to 
+  send the message will be done 3 times. 
+
+  Notes:
+  * Remember the sensor requires 5v voltage, if using NodeMCU - you might require powering it using an external power source.
+
+  TODO:
+  * See if this enough
+  * change onto JSON msg format to ease reading by NodeRED etc.
+  
 */
 
 #include <ESP8266WiFi.h>
@@ -14,7 +25,7 @@
 
 const char* ssid = "idanadi";
 const char* password = "toytoy123";
-const char* mqtt_server = "broker.mqtt-dashboard.com";
+const char* mqtt_server = "https://192.168.1.184";
 int inputPin = 2;
 int pirState = LOW;
 
@@ -57,6 +68,7 @@ void pirSensorAlert(){
     Serial.print("Publish message: ");
     Serial.println(msg);
     client.publish("outTopic", msg);
+    delay(5000); // wait 5 seconds before continuing 
       pirState=HIGH;
     }else{
       if(pirState==HIGH){
