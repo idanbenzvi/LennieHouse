@@ -1,0 +1,9 @@
+* use a single RF module arduino / esp8266 / rpi to control the rolling 
+shutters and connect the module VIA the MQTT protocol or any other 
+means to the Rpi running OpenHAB2
+
+* Can be done using ESPiLight
+* any other good RF library might also fit the bill
+
+tutorial showing this solution:
+https://youtu.be/94skkeyLPcI
